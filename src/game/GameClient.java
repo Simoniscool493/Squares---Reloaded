@@ -35,7 +35,7 @@ public class GameClient implements Focusable
 	@Override
 	public void OnClick(int x, int y) 
 	{
-		
+		//test second commit 2
 	}
 
 	@Override
