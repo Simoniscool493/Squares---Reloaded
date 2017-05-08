@@ -23,7 +23,7 @@ public class GameClient implements Focusable
 	public void setGame(Game g)
 	{
 		_currentConnectedGame = g;
-		clientId = g.addClient();
+		clientId = g.addClientAndReturnId();
 	}
 	
 	@Override
@@ -35,7 +35,7 @@ public class GameClient implements Focusable
 	@Override
 	public void OnClick(int x, int y) 
 	{
-		//test second commit 2
+		
 	}
 
 	@Override

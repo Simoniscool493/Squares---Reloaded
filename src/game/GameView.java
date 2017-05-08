@@ -19,16 +19,19 @@ public class GameView
 	{
 		if(game==null)
 		{
-			g2.setColor(Color.blue);
-			g2.fillRect(0, 0, _windowConfig.Width, _windowConfig.Height);
-			g2.setColor(Color.red);
-			DrawingUtils.DrawCenteredString("No Game Has Been Set", _windowConfig.Width/2, _windowConfig.Height/2, g2);
+			drawNoGameSetMessage(g2);
 		}
 		else
 		{
-			g2.setColor(Color.white);
-			g2.fillRect(0, 0, _windowConfig.Width, _windowConfig.Height);
-			g2.setColor(Color.black);
+			game.render(g2);
 		}
+	}
+	
+	public void drawNoGameSetMessage(Graphics2D g2)
+	{
+		g2.setColor(Color.blue);
+		g2.fillRect(0, 0, _windowConfig.Width, _windowConfig.Height);
+		g2.setColor(Color.red);
+		DrawingUtils.DrawCenteredString("No Game Has Been Set", _windowConfig.Width/2, _windowConfig.Height/2, g2);
 	}
 }

@@ -78,7 +78,8 @@ public class GameEngine extends Engine
 	public void initializeDefaultLocalGame()
 	{
 		Game newGame = GameFactory.createDefaultGame(_callBack);
-		
+		newGame.initialize();
+
 		_currentlyHostedGame = newGame;
 		_gameClient.setGame(newGame);
 		
