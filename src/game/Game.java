@@ -3,6 +3,8 @@ package game;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -19,11 +21,12 @@ public class Game
 	private GameState _state = GameState.Undefined;
 	private IGameMap _map;
 	
-	private ArrayList<Player> players = new ArrayList<Player>();
-	
+	private LinkedHashSet<Player> _players = new LinkedHashSet<Player>();
+	private LinkedHashSet<Tile> _changedList = new LinkedHashSet<Tile>();
+
 	private Timer gameTimer;
 	private CallBackToEngine _callback;
-	private Dictionary<Integer,Integer> _keyBuffer;
+	private HashMap<Integer,Control> _keyBuffer;
 	
 	public Game(IGameMap map,CallBackToEngine callBack)
 	{
@@ -34,6 +37,7 @@ public class Game
 	
 	public void initialize()
 	{
+		_keyBuffer = new HashMap<Integer,Control>();
 		_map.initialize();
 		assignTimer();
 	}
@@ -46,7 +50,7 @@ public class Game
 	
 	public int addClientAndReturnId()
 	{
-		int clientId = players.size();
+		int clientId = _players.size();
 		createPlayer(clientId);
 		
 		return clientId;
@@ -54,19 +58,35 @@ public class Game
 	
 	public void sendToBuffer(int keyCode, int clientId)
 	{
-		_keyBuffer.put(clientId, keyCode);
+		_keyBuffer.put(clientId,Control.getByKeyCode(keyCode));
 	}
 	
 	private void createPlayer(int clientId)
 	{
 		Player player = new Player(clientId);
 		placeEntityAtPosition(player,_map.getFirstFreeTile());
-		players.add(player);
+		_players.add(player);
 	}
 
 	private void tick()
 	{
+		clearKeyBuffer();
+		
+		_changedList.add(_map.getFirstFreeTile());
 		_callback.sendCallBack(new RefreshScreenMessage());
+	}
+	
+	private void clearKeyBuffer()
+	{
+		for(Player p:_players)
+		{
+			if(_keyBuffer.containsKey(p.Id))
+			{
+				p.acceptKeyInput(_keyBuffer.get(p.Id));
+			}
+		}
+		
+		_keyBuffer.clear();
 	}
 	
 	private void assignTimer()
@@ -92,6 +112,11 @@ public class Game
 	
 	public void render(Graphics2D g2)
 	{
-		g2.fillRect(0, 0, 300, 300);
+		for(Tile t:_changedList)
+		{
+			t.render(g2);
+		}
+		
+		_changedList.clear();
 	}
 }

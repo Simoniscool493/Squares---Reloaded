@@ -13,6 +13,7 @@ import messages.EngineMessage;
 import messages.MainMenuMessage;
 import messages.NewGameMenuMessage;
 import messages.RefreshScreenMessage;
+import utils.GameDrawing;
 import windows.WindowConfig;
 
 public class GameEngine extends Engine
@@ -29,6 +30,7 @@ public class GameEngine extends Engine
 	public GameEngine(WindowConfig windowConfig)
 	{
 		this._windowConfig = windowConfig;
+		GameDrawing.UpdateGameScreenSize(windowConfig.Width, windowConfig.Height);
 		
 		_callBack = new CallBackToEngine()
 		{

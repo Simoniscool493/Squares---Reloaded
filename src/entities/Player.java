@@ -1,13 +1,19 @@
 package entities;
 
+import game.Control;
 import map.Tile;
 
 public class Player extends Entity
 {
-	private int _id;
+	public int Id;
 	
 	public Player(int playerId)
 	{
-		_id = playerId;
+		Id = playerId;
+	}
+	
+	public void acceptKeyInput(Control c)
+	{
+
 	}
 }
